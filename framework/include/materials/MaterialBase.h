@@ -92,6 +92,10 @@ public:
    */
   virtual void computeProperties() = 0;
 
+
+  Real _out_of_plane_strain_wrapper;
+  Real _old_plane_strain_wrapper;
+
   /**
    * Resets the properties at each quadrature point (see resetQpProperties), only called if 'compute
    * = false'.

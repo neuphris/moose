@@ -25,7 +25,7 @@ public:
   ComputePlaneSmallStrain(const InputParameters & parameters);
 
 protected:
-  virtual Real computeOutOfPlaneStrain();
+  virtual Real computeOutOfPlaneStrain() override;
 
   /// gets its subblock index for current element
   unsigned int getCurrentSubblockIndex() const

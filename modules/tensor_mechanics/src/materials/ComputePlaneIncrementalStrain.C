@@ -60,8 +60,10 @@ ComputePlaneIncrementalStrain::computeOutOfPlaneGradDisp()
 {
   if (_scalar_out_of_plane_strain_coupled)
     return (*_scalar_out_of_plane_strain[getCurrentSubblockIndex()])[0];
-  else
+  else if (_out_of_plane_strain_coupled)
     return _out_of_plane_strain[_qp];
+  else
+    return _out_of_plane_strain_wrapper;
 }
 
 Real
@@ -69,6 +71,8 @@ ComputePlaneIncrementalStrain::computeOutOfPlaneGradDispOld()
 {
   if (_scalar_out_of_plane_strain_coupled)
     return (*_scalar_out_of_plane_strain_old[getCurrentSubblockIndex()])[0];
-  else
+  else if (_out_of_plane_strain_coupled)
     return _out_of_plane_strain_old[_qp];
+  else
+    return _old_plane_strain_wrapper;
 }

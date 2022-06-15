@@ -35,17 +35,20 @@ ComputePlaneSmallStrain::ComputePlaneSmallStrain(const InputParameters & paramet
     _scalar_out_of_plane_strain_coupled(isCoupledScalar("scalar_out_of_plane_strain")),
     _out_of_plane_strain_coupled(isCoupled("out_of_plane_strain")),
     _out_of_plane_strain(_out_of_plane_strain_coupled ? coupledValue("out_of_plane_strain") : _zero)
+    // _total_strain_old(getMaterialPropertyOld<RankTwoTensor>("total_strain"))
 {
   if (_out_of_plane_strain_coupled && _scalar_out_of_plane_strain_coupled)
     paramError("_out_of_plane_strain_coupled",
                "Must define only one of out_of_plane_strain or scalar_out_of_plane_strain");
-
   if (_scalar_out_of_plane_strain_coupled)
   {
     const auto nscalar_strains = coupledScalarComponents("scalar_out_of_plane_strain");
     _scalar_out_of_plane_strain.resize(nscalar_strains);
     for (unsigned int i = 0; i < nscalar_strains; ++i)
+    {
       _scalar_out_of_plane_strain[i] = &coupledScalarValue("scalar_out_of_plane_strain", i);
+      out << "scalar out of plane strain "<<  i  << " " <<_scalar_out_of_plane_strain[i]  <<std::endl;
+    }
   }
 }
 
@@ -54,6 +57,8 @@ ComputePlaneSmallStrain::computeOutOfPlaneStrain()
 {
   if (_scalar_out_of_plane_strain_coupled)
     return (*_scalar_out_of_plane_strain[getCurrentSubblockIndex()])[0];
-  else
+  else if (_out_of_plane_strain_coupled)
     return _out_of_plane_strain[_qp];
+  else
+    return _out_of_plane_strain_wrapper;
 }
